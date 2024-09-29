@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 URL = 'https://eu.idec.com/idec-eu/en_EU/media-center/press'
-DIR = "/home/roberto/PycharmProjects/Scrapers/PDFscraper/data"
+DIR = "/home/roberto/PycharmProjects/DataScrapers-pet-projects-/PDFscraper/data"
 COOKIE_ID = 'CybotCookiebotDialogFooter'
 COOKIE_BUTTON = 'CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll'
 
@@ -104,7 +104,7 @@ class PDFScraper:
         self._download_pdfs()
 
         print("Downloading in process... ")
-        time.sleep(3)  # giving time for downloading all stuff
+        time.sleep(2)  # giving time for downloading all stuff
         print("Completed!")
 
         self.driver.quit()
