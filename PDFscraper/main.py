@@ -33,8 +33,10 @@ class PDFScraper:
         :return:
             Selenium driver type 'WebDriver'
         """
-
         options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
         options.add_experimental_option('prefs', {
             'download.default_directory': self.download_dir,
             'download.prompt_for_download': False,
@@ -54,9 +56,9 @@ class PDFScraper:
                 EC.presence_of_element_located((By.ID, COOKIE_ID))
             )
             if cookie_div:
-                self.driver.find_element(By.ID, COOKIE_BUTTON).click()
-        except Exception as e:
-            print(f"Cookie consent not found or could not be clicked- {e}")
+                WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, COOKIE_BUTTON))).click()
+        except Exception:
+            print(f"Cookie consent not found or could not be clicked")
 
     def _get_pdf_links(self):
         """
@@ -65,11 +67,14 @@ class PDFScraper:
         and clearing all staff.
         """
         while True:
-            new_element_found = False
-            WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, APP_DIV_ID)))
-            app_div = self.driver.find_element(By.ID, APP_DIV_ID)
-            content_div = app_div.find_element(By.CSS_SELECTOR, CONTENT_DIV)
-            links = content_div.find_elements(By.TAG_NAME, TAG_NAME)
+            try:
+                new_element_found = False
+                WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, APP_DIV_ID)))
+                app_div = self.driver.find_element(By.ID, APP_DIV_ID)
+                content_div = app_div.find_element(By.CSS_SELECTOR, CONTENT_DIV)
+                links = content_div.find_elements(By.TAG_NAME, TAG_NAME)
+            except StaleElementReferenceException:
+                continue
 
             for link in links:
                 try:
