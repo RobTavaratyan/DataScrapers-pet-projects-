@@ -109,7 +109,7 @@ class PDFScraper:
         self._download_pdfs()
 
         print("Downloading in process... ")
-        time.sleep(2)  # giving time for downloading all stuff
+        time.sleep(2)  # giving time for downloading all PDF
         print("Completed!")
 
         self.driver.quit()
