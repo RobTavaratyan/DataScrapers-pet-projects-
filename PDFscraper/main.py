@@ -52,6 +52,10 @@ class PDFScraper:
         """
         try:
             self.driver.delete_all_cookies()
+        except Exception:
+            pass
+
+        try:
             cookie_div = WebDriverWait(self.driver, 10).until(
                 EC.presence_of_element_located((By.ID, COOKIE_ID))
             )
